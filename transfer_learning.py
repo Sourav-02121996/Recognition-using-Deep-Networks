@@ -185,7 +185,7 @@ def main(argv):
     print(model)
 
     # Set up Greek letter data loader
-    training_set_path = 'greek_train'
+    training_set_path = 'data/greek_train'
     if not os.path.exists(training_set_path):
         print(f'\nError: Greek training data not found at {training_set_path}')
         print('Please download and extract the Greek letters dataset.')
