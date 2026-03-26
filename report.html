@@ -381,13 +381,13 @@ MyNetwork(
 
   <h3>5.4: Discussion</h3>
   <p>
-    <strong>Dimension 1 (Filters):</strong> As hypothesized, accuracy improved with more filters up to approximately (20, 40), after which gains diminished. The additional filters allowed the network to capture more diverse visual features. Training time increased roughly linearly as expected.
+    <strong>Dimension 1 (Filters):</strong> As hypothesized, accuracy improved with more filters, from 83.55% with (5,10) up to 87.94% with (40,80). Training time increased roughly linearly from 61s to 121s. The trend supports the hypothesis that more filters capture more diverse visual features, though returns diminished above (15,30).
   </p>
   <p>
-    <strong>Dimension 2 (Dropout):</strong> The results confirmed that moderate dropout rates (0.2&ndash;0.4) produced the best test accuracy. Zero dropout showed slightly lower test accuracy (possible overfitting), while high dropout rates (&ge;0.6) degraded performance significantly by removing too much information during training.
+    <strong>Dimension 2 (Dropout):</strong> The best accuracy was 88.69% at dropout=0.3, with 0.0 (88.40%) and 0.5 (88.42%) also performing well. High dropout (&ge;0.6) degraded performance to 87.2&ndash;87.4%, confirming that excessive dropout prevents effective learning. The hypothesis about moderate dropout was supported, though the optimal rate (0.3) was slightly lower than expected.
   </p>
   <p>
-    <strong>Dimension 3 (Hidden size):</strong> Increasing the hidden layer from 25 to 100&ndash;150 nodes improved accuracy, supporting the hypothesis. Beyond 150 nodes, accuracy plateaued or slightly decreased, suggesting diminishing returns from additional capacity on this dataset.
+    <strong>Dimension 3 (Hidden size):</strong> The best accuracy was 88.46% with 50 hidden nodes. Surprisingly, increasing to 100&ndash;300 nodes did not improve performance (86.35&ndash;88.34%), partially contradicting the hypothesis. This suggests the convolutional layers already extract sufficiently rich features that a small FC layer can classify, and larger layers may introduce unnecessary parameters that are harder to optimize in 5 epochs.
   </p>
 
   <!-- =============================== -->
