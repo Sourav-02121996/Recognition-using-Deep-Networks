@@ -158,7 +158,7 @@
   <h1 style="font-size: 16pt;">Project 5: Recognition using Deep Networks</h1>
   <div class="header-info">
     <p><strong>Name:</strong> Joseph Defendre, Sourav Das</p>
-    <p><strong>Date:</strong> March 2026</p>
+    <p><strong>Date:</strong> April 2026</p>
   </div>
 
   <hr>
@@ -166,7 +166,7 @@
   <!-- =============================== -->
   <h2>1. Project Description</h2>
   <p>
-    This project explores deep learning for image recognition using the MNIST digit dataset and PyTorch. We built and trained a convolutional neural network (CNN) to classify handwritten digits, achieving over 98% test accuracy within 5 epochs. We then examined the learned filters and their effects on input images, applied transfer learning to recognize Greek letters (alpha, beta, gamma) using the pre-trained MNIST network, and re-implemented the classifier using a Vision Transformer architecture with patch embeddings. Finally, we conducted a systematic experiment evaluating network architecture variations along three dimensions &mdash; filter counts, dropout rate, and hidden layer size &mdash; using Fashion MNIST to compare the impact of each design choice on classification accuracy.
+    This project explores deep learning for image recognition using the MNIST digit dataset and PyTorch. We built and trained a convolutional neural network (CNN) to classify handwritten digits, achieving over 98% test accuracy within 5 epochs. We then examined the learned filters and their effects on input images, applied transfer learning to recognize Greek letters (alpha, beta, gamma) using the pre-trained MNIST network, and re-implemented the classifier using a Vision Transformer architecture with patch embeddings. Finally, we conducted a systematic experiment evaluating network architecture variations along three dimensions which are filter counts, dropout rate, and hidden layer size, by using Fashion MNIST to compare the impact of each design choice on classification accuracy.
   </p>
 
   <!-- =============================== -->
@@ -175,40 +175,25 @@
   <!-- Task 1.1 -->
   <h3>Task 1.1: MNIST Digit Data Set</h3>
   <p>
-    Loaded the MNIST dataset via <code>torchvision.datasets.MNIST</code>, which provides 60,000 training images and 10,000 test images of 28&times;28 grayscale handwritten digits. Images are normalized using mean=0.1307 and std=0.3081. Below are the first six example digits from the test set (without shuffling).
+    Loaded the MNIST dataset via <em>torchvision.datasets.MNIST</em>, which provides 60,000 training images and 10,000 test images of 28&times;28 grayscale handwritten digits. The Task 1 Part A script loads the test split without shuffling so the same six examples are shown each time. Images are normalized using mean=0.1307 and std=0.3081. The required plot of the first six example digits from the MNIST test set is included below.
   </p>
   <div class="gallery single">
     <figure>
       <img src="results/first_six_digits.png" alt="First six test digits">
-      <figcaption>First 6 example digits from the MNIST test set</figcaption>
+      <figcaption>Task 1 Part A result: first 6 example digits from the MNIST test set</figcaption>
     </figure>
   </div>
 
   <!-- Task 1.2 -->
   <h3>Task 1.2: CNN Network Model</h3>
   <p>
-    The network architecture follows the specification from the assignment. The <code>MyNetwork</code> class inherits from <code>nn.Module</code> and implements the following layer structure:
+    The network architecture follows the specification from the assignment. The <em>MyNetwork</em> class inherits from <em>nn.Module</em> and implements the required convolution, pooling, dropout, flattening, and fully connected stages shown below. The architecture was also verified with a standalone Task 1 Part B script that prints the model and confirms the output shape after each stage for a 28&times;28 MNIST input.
   </p>
-  <div class="network-diagram">
-Input: 1x28x28 grayscale image
-        |
-[Conv2d] 10 filters, 5x5 kernel  &rarr;  10x24x24
-        |
-[MaxPool2d] 2x2 + ReLU           &rarr;  10x12x12
-        |
-[Conv2d] 20 filters, 5x5 kernel  &rarr;  20x8x8
-        |
-[Dropout2d] p=0.5
-        |
-[MaxPool2d] 2x2 + ReLU           &rarr;  20x4x4
-        |
-[Flatten]                         &rarr;  320
-        |
-[Linear] 320 &rarr; 50 + ReLU
-        |
-[Linear] 50 &rarr; 10 + log_softmax
-        |
-Output: 10-class log-probabilities
+  <div class="gallery wide">
+    <figure>
+      <img src="results/network_diagram.svg" alt="MNIST CNN network diagram">
+      <figcaption>Task 1 Part B network diagram for the MNIST CNN architecture</figcaption>
+    </figure>
   </div>
   <p>
     The first convolution learns 10 edge/texture detectors from the raw pixel input. After max pooling, the second convolution learns higher-order features from the first layer's activations. Dropout (50%) during training prevents co-adaptation of feature detectors. The fully connected layers map the 320-dimensional flattened feature vector to 10 digit classes via a 50-node hidden layer.
@@ -217,7 +202,7 @@ Output: 10-class log-probabilities
   <!-- Task 1.3 -->
   <h3>Task 1.3: Training Results</h3>
   <p>
-    The model was trained for 5 epochs using SGD with learning rate 0.01 and momentum 0.5, using a batch size of 64. Training loss decreased steadily from 0.6339 in epoch 1 to 0.1147 by epoch 5, while test accuracy climbed from 95.36% to 98.11%.
+    The model was trained for 5 epochs using SGD with learning rate 0.01, momentum 0.5, and batch size 64. After each epoch, the code evaluates both the training set and the test set and records loss and accuracy. Over the 5 epochs, training loss dropped from 0.6921 to 0.1224 while test loss dropped from 0.1746 to 0.0583. Test accuracy improved from 94.52% in epoch 1 to 98.05% by epoch 5. The training script saves both the combined loss/accuracy plot and the underlying per-epoch values for reproducibility.
   </p>
   <div class="gallery wide">
     <figure>
@@ -229,27 +214,27 @@ Output: 10-class log-probabilities
   <!-- Task 1.4 -->
   <h3>Task 1.4: Saved Network</h3>
   <p>
-    The trained model weights are saved to <code>results/mnist_model.pth</code> using <code>torch.save(model.state_dict(), ...)</code>. This allows the model to be loaded for subsequent tasks without retraining.
+    After training, the network weights are saved to <em>results/mnist_model.pth</em> using <em>torch.save(model.state_dict(), ...)</em>. A separate Task 1 Part D verification script confirms that this file exists and that the saved weights can be loaded back into the <em>MyNetwork</em> architecture successfully. This saved model is then reused in the later tasks without retraining.
   </p>
 
   <!-- Task 1.5 -->
   <h3>Task 1.5: Test Set Evaluation (First 10 Examples)</h3>
   <p>
-    The saved model was loaded and set to evaluation mode (<code>model.eval()</code>) to disable dropout. The first 10 test examples were run through the network. For each example, the 10 output log-probabilities, predicted class, and true label are printed. The network correctly classified all 10 examples.
+    The saved model was loaded in evaluation mode so dropout was disabled, then the first 10 examples from the MNIST test set were passed through the network in a separate Task 1 Part E script. For each example, the 10 output log-probabilities, predicted class, and true label are printed. The current trained model correctly classified all 10 examples. The printed output is also saved to a text file for reproducibility.
   </p>
   <pre>
 Idx |                                   Network Output (10 values) | Pred | True | Match
 -------------------------------------------------------------------------------------
-  0 | -17.44 -18.49 -10.03 -10.74 -24.37 -19.31 -31.96  -0.00 -13.44 -13.06 |    7 |    7 |   YES
-  1 | -12.18  -9.83  -0.00 -16.28 -23.09 -23.76 -15.42 -16.96 -14.68 -33.23 |    2 |    2 |   YES
-  2 | -12.31  -0.00  -8.63 -11.97  -8.31 -13.29 -11.64  -7.21  -9.54 -11.88 |    1 |    1 |   YES
-  3 |  -0.00 -23.97 -11.85 -17.06 -20.15 -17.85 -12.48 -14.74 -16.55 -14.03 |    0 |    0 |   YES
-  4 | -16.70 -20.93 -13.73 -15.82  -0.00 -16.28 -14.19 -13.97 -14.27  -5.87 |    4 |    4 |   YES
-  5 | -14.93  -0.00 -10.95 -13.44  -8.67 -17.21 -15.78  -8.04  -9.78 -12.82 |    1 |    1 |   YES
-  6 | -26.12 -14.28 -16.19 -15.14  -0.00 -13.35 -23.55 -12.83  -5.63  -7.24 |    4 |    4 |   YES
-  7 | -18.11 -14.77  -9.43  -6.64  -7.65  -7.64 -17.82 -11.03  -7.98  -0.00 |    9 |    9 |   YES
-  8 | -13.35 -20.22 -12.85 -16.78 -12.61  -0.00  -7.29 -18.00  -6.86  -9.18 |    5 |    5 |   YES
-  9 | -20.39 -23.47 -15.00 -10.58 -10.37 -16.33 -27.43  -6.10  -7.92  -0.00 |    9 |    9 |   YES
+  0 | -18.82 -19.94 -10.28 -10.20 -22.20 -19.58 -36.71  -0.00 -15.41 -11.48 |    7 |    7 |   YES
+  1 |  -9.21  -9.83  -0.00 -12.49 -25.06 -19.59 -13.04 -19.84 -12.21 -24.75 |    2 |    2 |   YES
+  2 | -13.40  -0.00  -9.82 -13.43  -9.56 -14.10 -11.70  -8.31 -10.18 -12.65 |    1 |    1 |   YES
+  3 |  -0.00 -21.49 -12.39 -17.56 -20.14 -14.18 -13.87 -14.77 -17.10 -12.56 |    0 |    0 |   YES
+  4 | -17.05 -19.27 -16.02 -16.75  -0.00 -14.67 -14.88 -13.65 -15.05  -6.41 |    4 |    4 |   YES
+  5 | -17.36  -0.00 -13.18 -16.09 -10.83 -18.17 -16.99  -9.76 -12.08 -14.10 |    1 |    1 |   YES
+  6 | -24.65 -13.61 -17.54 -19.26  -0.00 -13.39 -19.14 -12.43  -9.26  -6.51 |    4 |    4 |   YES
+  7 | -18.60 -13.11 -11.46  -9.22  -5.90  -8.82 -19.37 -10.53  -8.72  -0.00 |    9 |    9 |   YES
+  8 |  -9.26 -22.03 -12.32 -16.47 -13.25  -0.00  -7.73 -16.29  -7.79  -8.33 |    5 |    5 |   YES
+  9 | -21.36 -22.79 -16.51 -11.84  -7.55 -14.17 -27.28  -7.26  -8.53  -0.00 |    9 |    9 |   YES
   </pre>
   <div class="gallery single">
     <figure>
@@ -261,8 +246,14 @@ Idx |                                   Network Output (10 values) | Pred | True
   <!-- Task 1.6 -->
   <h3>Task 1.6: Custom Handwritten Digits</h3>
   <p>
-    Ten digits (0&ndash;9) were written by hand using a thick marker on white paper, photographed, and cropped to individual square images. Each image was converted to grayscale, resized to 28&times;28, and intensity-inverted to match the MNIST format (white digits on black background). The images were then normalized with the same MNIST mean and standard deviation before being passed through the network.
+    Ten digits (0&ndash;9) were written by hand using a thick marker on white paper, photographed, and cropped to individual square images. Each image was converted to grayscale, intensity-inverted to match the MNIST format (white digits on black background), contrast-adjusted, resized into a centered 28&times;28 canvas, and normalized with the same MNIST mean and standard deviation before being passed through the network. On these custom inputs, the model correctly classified 7 of the 10 digits (70.0% accuracy). In this run, digits 0, 5, and 8 were misclassified as 9.
   </p>
+  <div class="gallery single">
+    <figure>
+      <img src="results/custom_digits_inputs.png" alt="Original custom digit inputs">
+      <figcaption>Original handwritten digit images from the custom_digits folder</figcaption>
+    </figure>
+  </div>
   <div class="gallery single">
     <figure>
       <img src="results/custom_digits_results.png" alt="Custom digit results">
@@ -270,7 +261,7 @@ Idx |                                   Network Output (10 values) | Pred | True
     </figure>
   </div>
   <p>
-    <em>Note: Custom digit images should be placed in the <code>custom_digits/</code> directory as 0.png through 9.png before running <code>test_mnist.py</code>.</em>
+    <em>Note: Custom digit images should be placed in the custom_digits directory using filenames 0 through 9 with a common image extension such as PNG, JPG, JPEG, or BMP before running the Part F script.</em>
   </p>
 
   <!-- Task 2 -->
@@ -278,7 +269,7 @@ Idx |                                   Network Output (10 values) | Pred | True
 
   <h3>Task 2.1: First Layer Filter Analysis</h3>
   <p>
-    The first convolutional layer (<code>conv1</code>) has weights with shape [10, 1, 5, 5] &mdash; 10 filters, 1 input channel, each 5&times;5 pixels. The filters are visualized below. Several filters appear to detect oriented edges at various angles, while others respond to specific spatial patterns or intensity gradients.
+    The first convolutional layer (<em>conv1</em>) was accessed directly from the loaded model using <em>model.conv1.weight</em>. Its weight tensor has shape [10, 1, 5, 5], meaning there are 10 learned filters, 1 input channel, and each filter is 5&times;5 pixels. The full weight values and tensor shape were printed and saved to a text file, and the 10 filters were visualized in a 3&times;4 grid as required. Several filters appear to detect oriented edges at various angles, while others respond to specific spatial patterns or intensity gradients.
   </p>
   <div class="gallery single">
     <figure>
@@ -289,7 +280,7 @@ Idx |                                   Network Output (10 values) | Pred | True
 
   <h3>Task 2.2: Filter Effects</h3>
   <p>
-    Each of the 10 filters was applied to the first training example using OpenCV's <code>filter2D</code> function. The resulting filtered images show how each filter responds to different features in the digit. Edge-detecting filters highlight strokes and contours, while others produce more uniform or textured responses depending on the local structure of the digit.
+    Each of the 10 filters was applied to the first training example using OpenCV's <em>filter2D</em> function. The first training example is the digit 5, shown in the first panel of the figure. The resulting filtered images show how each filter responds to different features in the digit. Edge-detecting filters highlight strokes and contours, while others produce more uniform or textured responses depending on the local structure of the digit.
   </p>
   <div class="gallery single">
     <figure>
@@ -304,10 +295,10 @@ Idx |                                   Network Output (10 values) | Pred | True
   <!-- Task 3 -->
   <h2>Task 3: Transfer Learning on Greek Letters</h2>
   <p>
-    To classify Greek letters (alpha, beta, gamma) using the pre-trained MNIST network, we: (1) loaded the MNIST-trained <code>MyNetwork</code> model, (2) froze all parameters, (3) replaced the last fully connected layer (<code>fc2</code>) with a new <code>nn.Linear(50, 3)</code> layer for 3-class output. Only the new layer's weights are trainable.
+    To classify Greek letters (alpha, beta, gamma) using the pre-trained MNIST network, we: (1) loaded the MNIST-trained <em>MyNetwork</em> model, (2) froze all parameters, (3) replaced the last fully connected layer (<em>fc2</em>) with a new <em>nn.Linear(50, 3)</em> layer for 3-class output, and (4) trained only that final layer on the 27 provided Greek-letter examples. This follows the assignment requirement to reuse the MNIST feature extractor and learn a new 3-class classifier on top of it.
   </p>
   <p>
-    The 27 Greek letter training images (133&times;133, RGB) were preprocessed using the provided <code>GreekTransform</code> class, which converts to grayscale, scales down, center-crops to 28&times;28, and inverts intensities to match MNIST format. Training used SGD with lr=0.01 and batch size 5.
+    The 27 Greek letter training images (133&times;133, RGB) were preprocessed using the provided <em>GreekTransform</em> class, which converts to grayscale, scales down, center-crops to 28&times;28, and inverts intensities to match MNIST format. The data were loaded with <em>torchvision.datasets.ImageFolder</em>, using batch size 5 and SGD with learning rate 0.01 and momentum 0.5.
   </p>
   <pre>
 Modified Network:
@@ -326,31 +317,37 @@ MyNetwork(
     </figure>
   </div>
   <p>
-    The network reached 100% accuracy on the 27 training examples by epoch 40, though due to dropout, accuracy fluctuated between 92.6% and 100% across subsequent epochs. The rapid convergence is expected because the frozen convolutional layers already extract meaningful edge and shape features from the MNIST pre-training, and only the 3-output classification layer weights need to be learned.
+    In the completed training run, the network first reached 100% training accuracy at epoch 14. Because the dataset is extremely small and the dropout layer remains active during training, the reported accuracy fluctuated between 88.9% and 100.0% across later epochs before ending at 100.0% on epoch 200. This behavior is expected: the frozen MNIST convolutional layers already provide useful edge and shape features, so the new 3-output layer learns quickly, but the small data size makes the per-epoch metric noisy.
+  </p>
+  <p>
+    Additional user-provided alpha, beta, and gamma images were then evaluated from the <em>custom_greek</em> directory. To better match the training distribution, each photo was converted to grayscale, histogram-equalized, resized to 128&times;128, and then passed through the same <em>GreekTransform</em> used for the provided dataset. On these six handwritten examples, the model correctly classified 5 of 6 images (83.3% accuracy). Both alpha examples, one beta example, and both gamma examples were classified correctly; only the second beta image was misclassified.
   </p>
   <div class="gallery single">
     <figure>
       <img src="results/custom_greek_results.png" alt="Custom Greek letter results">
-      <figcaption>Classification results on custom Greek letter images</figcaption>
+      <figcaption>Classification results on additional handwritten Greek-letter examples</figcaption>
     </figure>
   </div>
   <p>
-    <em>Note: Custom Greek letter images should be placed in the <code>custom_greek/</code> directory before running <code>transfer_learning.py</code>.</em>
+    The additional-example results remain weaker than the 27-image training-set performance, which suggests the transfer-learned classifier is still somewhat sensitive to stroke style and shape variation. That gap is plausible given the tiny training set and the fact that only the final classification layer was retrained, but the improved preprocessing substantially reduced the mismatch between the photographed inputs and the provided Greek training images.
   </p>
 
   <!-- Task 4 -->
   <h2>Task 4: Transformer-Based Network</h2>
   <p>
-    The CNN was re-implemented as a Vision Transformer (<code>NetTransformer</code>) following the four-step process: (1) divide the 28&times;28 image into 7&times;7 patches with stride 7, yielding 16 patch tokens; (2) embed each patch via a linear layer into a 64-dimensional token, add a learnable CLS token and positional embeddings, then pass through a 2-layer Transformer encoder with 4 attention heads and MLP dimension 128; (3) use the CLS token output as the image representation; (4) classify via a linear hidden layer (64&rarr;128, ReLU, dropout) followed by the output layer (128&rarr;10, log_softmax).
+    The CNN was re-implemented as a Vision Transformer (<em>NetTransformer</em>) using the provided template structure. Following the assignment steps, the image is divided into overlapping 4&times;4 patches with stride 2, producing 169 patch tokens from each 28&times;28 MNIST image. Each patch is flattened and projected into a 48-dimensional embedding, positional embeddings are added, and the token sequence is processed by a 4-layer Transformer encoder with 8 attention heads and MLP dimension 128. Because the default template uses token averaging instead of a CLS token, the encoder outputs are averaged into one image representation before the final classifier.
   </p>
   <div class="gallery wide">
     <figure>
       <img src="results/transformer_training.png" alt="Transformer training results">
-      <figcaption>Transformer model: training/test loss (left) and accuracy (right) over 10 epochs</figcaption>
+      <figcaption>Transformer model: training/test loss (left) and accuracy (right) over 15 epochs</figcaption>
     </figure>
   </div>
   <p>
-    With the default settings (patch_size=7, dim=64, depth=2, heads=4, 81,034 total parameters), the Transformer achieved 97.7% peak test accuracy after 10 epochs using the Adam optimizer with lr=0.001. Training accuracy reached 96.2% by epoch 10 while test loss stabilized around 0.07. While the CNN converged faster and achieved slightly higher accuracy (98.11%) with fewer epochs, the Transformer demonstrates that self-attention over image patches can effectively learn digit classification without any convolution operations.
+    With the template default settings (<em>patch_size=4</em>, <em>stride=2</em>, <em>embed_dim=48</em>, <em>depth=4</em>, <em>heads=8</em>, <em>mlp_dim=128</em>, <em>dropout=0.1</em>, and no CLS token), the Transformer contained 104,842 trainable parameters. Using AdamW with learning rate 0.001 and weight decay 0.0001, it reached 93.74% test accuracy after epoch 1, exceeded 98% by epoch 5, and achieved its best and final test accuracy of 98.93% at epoch 15. The final training accuracy was 98.86% and the final test loss was 0.0352.
+  </p>
+  <p>
+    This default transformer slightly outperformed the earlier CNN test result reported in Task 1 while using a completely different feature-extraction mechanism. The result shows that self-attention over local image patches can classify MNIST digits very effectively even without any convolution layers, although the transformer training run was noticeably heavier because the overlapping patches produce a much longer token sequence.
   </p>
 
   <!-- Task 5 -->
@@ -368,32 +365,48 @@ MyNetwork(
 
   <h3>5.2: Experimental Setup</h3>
   <p>
-    We used a linear search strategy: optimize one dimension at a time while holding the others constant at the current best. The base configuration was: filters=(10,20), filter_size=5, fc_hidden=50, dropout=0.5, pool_size=2. Each configuration was trained for 5 epochs with SGD (lr=0.01, momentum=0.5) and evaluated on the Fashion MNIST test set. In total, approximately 21 configurations were evaluated across the three dimensions.
+    We used Fashion MNIST and a two-pass linear search strategy: optimize one dimension at a time while holding the others fixed at the current best, then run a refined sweep around the best coarse value. The base configuration was filters=(10,20), filter_size=5, fc_hidden=50, dropout=0.5, and pool_size=2. To keep the search tractable while still covering the assignment target range, the exploratory sweeps trained on a fixed 12,000-image subset of the Fashion MNIST training set for 2 epochs per configuration with SGD (lr=0.01, momentum=0.5, batch size 128), while every configuration was still evaluated on the full 10,000-image test set. This produced 52 search runs across the three dimensions, followed by 2 full-data confirmation runs (baseline and final best), for 54 total trained networks.
   </p>
 
   <h3>5.3: Results</h3>
+  <p>
+    The best architecture selected by the search was filters=(40,80), dropout=0.10, and fc_hidden=48. When retrained on the full Fashion MNIST training set for 5 epochs, this configuration reached 85.15% test accuracy, compared with 82.88% for the original baseline CNN, for a gain of 2.27 percentage points.
+  </p>
   <div class="gallery wide">
     <figure>
       <img src="results/experiment_results.png" alt="Experiment results">
-      <figcaption>Test accuracy across three architecture dimensions on Fashion MNIST</figcaption>
+      <figcaption>Coarse and refined Task 5 sweeps across three CNN architecture dimensions on Fashion MNIST</figcaption>
     </figure>
   </div>
 
   <h3>5.4: Discussion</h3>
   <p>
-    <strong>Dimension 1 (Filters):</strong> As hypothesized, accuracy improved with more filters, from 83.55% with (5,10) up to 87.94% with (40,80). Training time increased roughly linearly from 61s to 121s. The trend supports the hypothesis that more filters capture more diverse visual features, though returns diminished above (15,30).
+    <strong>Dimension 1 (Filters):</strong> The number of filters had the strongest positive effect. On the subset-based search, accuracy rose from 30.03% with (4,8) filters to 71.96% with (40,80), while per-run training time increased from about 3.0s to about 6.4s. This strongly supported the hypothesis that larger filter banks help the network capture more useful Fashion MNIST features, although the gains began to taper at the high end.
   </p>
   <p>
-    <strong>Dimension 2 (Dropout):</strong> The best accuracy was 88.69% at dropout=0.3, with 0.0 (88.40%) and 0.5 (88.42%) also performing well. High dropout (&ge;0.6) degraded performance to 87.2&ndash;87.4%, confirming that excessive dropout prevents effective learning. The hypothesis about moderate dropout was supported, though the optimal rate (0.3) was slightly lower than expected.
+    <strong>Dimension 2 (Dropout):</strong> The best dropout rate was 0.10, which reached 72.43% on the search subset. Performance stayed competitive for several nearby values, but the lowest tested high-dropout setting did not win, so the hypothesis was only partially supported. The search suggests Fashion MNIST benefits from a small amount of regularization in this CNN, but not from the heavier 0.3&ndash;0.5 range originally expected.
   </p>
   <p>
-    <strong>Dimension 3 (Hidden size):</strong> The best accuracy was 88.46% with 50 hidden nodes. Surprisingly, increasing to 100&ndash;300 nodes did not improve performance (86.35&ndash;88.34%), partially contradicting the hypothesis. This suggests the convolutional layers already extract sufficiently rich features that a small FC layer can classify, and larger layers may introduce unnecessary parameters that are harder to optimize in 5 epochs.
+    <strong>Dimension 3 (Hidden size):</strong> The best hidden-layer size was 48 nodes at 72.46% search accuracy. Very large hidden layers performed noticeably worse, dropping to 63.38% at 256 nodes, which supports the diminishing-returns hypothesis. In this setting, once the convolutional front-end was strong enough, a modest dense layer was sufficient and larger fully connected stages mostly added optimization difficulty and parameters.
   </p>
 
   <!-- =============================== -->
   <h2>3. Extensions</h2>
+  <h3>Transformer Extension: More Sophisticated Patch Embedding and Classification Head</h3>
   <p>
-    No extensions were implemented for this project.
+    We implemented the Task 4 extension suggested in the assignment by making both the patch embedding and classification stage more sophisticated. Instead of extracting tokens only with a direct patch-linear projection, the extension adds a small convolutional stem before tokenization: a 3&times;3 convolution first produces 24 local feature channels, followed by a 7&times;7 stride-4 convolution that projects the image into 64-dimensional patch tokens. This produces only 36 tokens per image instead of the 169 tokens used by the default transformer, while still letting the model learn local structure before the self-attention layers.
+  </p>
+  <p>
+    We also switched from token averaging to a learned CLS token and replaced the original single-hidden-layer classifier with a deeper head: 64 &rarr; 160 &rarr; 80 &rarr; 10 with GELU activations and dropout after each hidden layer. This keeps the encoder at 4 transformer layers and 8 heads, but gives the model a more expressive way to summarize the image and separate the digit classes after attention.
+  </p>
+  <div class="gallery wide">
+    <figure>
+      <img src="results/transformer_extension_training.png" alt="Transformer extension training results">
+      <figcaption>Extension result: convolutional-stem + CLS-token transformer training/test curves over 10 epochs</figcaption>
+    </figure>
+  </div>
+  <p>
+    The extension model contained 252,618 trainable parameters and reached 98.95% test accuracy after 10 epochs, with final training accuracy 98.75% and final test loss 0.0361. Its best accuracy was slightly higher than the default transformer result from Task 4 (98.95% vs. 98.93%), while using a much shorter token sequence. That suggests the more structured patch embedding and stronger classifier head preserved or slightly improved recognition performance while reducing the amount of self-attention work per image.
   </p>
 
   <!-- =============================== -->
@@ -408,7 +421,7 @@ MyNetwork(
     Transfer learning demonstrated the power of feature reuse: the convolutional layers trained on digits already extracted useful edge and shape features that transferred directly to Greek letter recognition. Only retraining the final classification layer was sufficient to achieve near-perfect accuracy on 27 examples, highlighting how pre-trained features generalize across related visual tasks.
   </p>
   <p>
-    Implementing the Transformer architecture provided insight into how self-attention can replace convolution for image classification. While the Transformer required more epochs and careful hyperparameter tuning to match the CNN's performance, it demonstrated that global attention over image patches is a viable alternative to local convolution operations.
+    Implementing the Transformer architecture gave us a better understanding of how self-attention can serve as an alternative to convolution for image classification. In this project, the baseline Transformer was able to slightly outperform the CNN on MNIST, and the extension with a convolutional patch stem, CLS token, and deeper classifier head improved the result a little further. At the same time, these models also made it clear that Transformers involve different design choices and can be more computationally expensive to train, even on a relatively simple dataset like MNIST.
   </p>
   <p>
     The architecture experiment on Fashion MNIST reinforced the importance of systematic evaluation. The linear search strategy allowed efficient exploration of the design space, and the results confirmed general deep learning intuitions about capacity, regularization, and diminishing returns. Automating the evaluation process was valuable for maintaining consistency and enabling reproducibility.
@@ -416,9 +429,12 @@ MyNetwork(
 
   <!-- =============================== -->
   <h2>5. Acknowledgments</h2>
-  <p>
-    PyTorch tutorials and documentation were referenced for network architecture and training loop design. The Greek letter training images were provided as part of the course materials by Professor Bruce Maxwell. The MNIST and Fashion MNIST datasets are provided by the <code>torchvision</code> package.
-  </p>
+  <ul>
+    <li>Claude (Anthropic) was used as a generative AI assistant for help with code debugging and report writing.</li>
+    <li>PyTorch tutorials and official documentation were consulted for model design, training loops, and tensor operations.</li>
+    <li>The Greek letter training images were provided as part of the course materials.</li>
+    <li>The MNIST and Fashion MNIST datasets are provided by the <i>torchvision</i> package.</li>
+  </ul>
 
   <!-- =============================== -->
   <h2>6. Time Travel Days</h2>

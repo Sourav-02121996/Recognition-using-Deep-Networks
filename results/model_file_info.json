@@ -1,0 +1,6 @@
+{
+  "model_path": "results/mnist_model.pth",
+  "file_size_bytes": 90821,
+  "modified_time": "2026-04-05T22:58:09",
+  "loaded_successfully": true
+}

@@ -1,0 +1,8 @@
+alpha_1.JPEG: True=alpha, Predicted=alpha CORRECT
+aplha_2.JPEG: True=alpha, Predicted=alpha CORRECT
+beta_1.JPEG: True=beta, Predicted=beta CORRECT
+beta_2.JPEG: True=beta, Predicted=alpha WRONG
+gamma_1.JPEG: True=gamma, Predicted=gamma CORRECT
+gamma_2.JPEG: True=gamma, Predicted=gamma CORRECT
+
+Accuracy: 5/6 (83.3%)

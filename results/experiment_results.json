@@ -1,155 +1,988 @@
 {
-  "filter_counts": [
-    {
-      "test_accuracy": 83.55,
-      "test_loss": 0.45730806884765623,
-      "train_time": 61.12376403808594,
-      "total_params": 9950,
-      "label": "(5,10)"
+  "plan": {
+    "hypotheses": {
+      "filters": "Increasing convolution filter counts should improve Fashion MNIST accuracy up to a plateau, while training time and parameter count should grow steadily.",
+      "dropout": "Moderate dropout should perform best. Very low dropout will risk overfitting, while very high dropout will underfit.",
+      "hidden": "Increasing the fully connected hidden size should help at first, but very large hidden layers should show diminishing returns relative to their extra parameter cost."
     },
-    {
-      "test_accuracy": 84.51,
-      "test_loss": 0.4187614654541016,
-      "train_time": 81.65182209014893,
+    "coarse": {
+      "filters": [
+        4,
+        6,
+        8,
+        10,
+        12,
+        16,
+        20,
+        24,
+        32
+      ],
+      "dropout": [
+        0.0,
+        0.1,
+        0.2,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7,
+        0.8
+      ],
+      "hidden": [
+        16,
+        24,
+        32,
+        48,
+        64,
+        96,
+        128,
+        192,
+        256
+      ]
+    }
+  },
+  "base_config": {
+    "num_filters1": 10,
+    "num_filters2": 20,
+    "filter_size": 5,
+    "fc_hidden": 50,
+    "dropout_rate": 0.5,
+    "pool_size": 2
+  },
+  "search_epochs": 2,
+  "confirmation_epochs": 5,
+  "dimensions": {
+    "filter_counts": {
+      "coarse": [
+        {
+          "test_accuracy": 30.03,
+          "test_loss": 1.9998627807617186,
+          "train_time": 3.414581060409546,
+          "total_params": 7872,
+          "label": "(4,8)",
+          "value": 4,
+          "config": {
+            "num_filters1": 4,
+            "num_filters2": 8,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 61.13,
+          "test_loss": 1.0811047485351561,
+          "train_time": 3.034811019897461,
+          "total_params": 12128,
+          "label": "(6,12)",
+          "value": 6,
+          "config": {
+            "num_filters1": 6,
+            "num_filters2": 12,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 66.04,
+          "test_loss": 1.0069569396972655,
+          "train_time": 3.6309781074523926,
+          "total_params": 16784,
+          "label": "(8,16)",
+          "value": 8,
+          "config": {
+            "num_filters1": 8,
+            "num_filters2": 16,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 61.57,
+          "test_loss": 0.9787003967285156,
+          "train_time": 4.020188093185425,
+          "total_params": 21840,
+          "label": "(10,20)",
+          "value": 10,
+          "config": {
+            "num_filters1": 10,
+            "num_filters2": 20,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.02,
+          "test_loss": 0.8578720947265625,
+          "train_time": 3.038377285003662,
+          "total_params": 27296,
+          "label": "(12,24)",
+          "value": 12,
+          "config": {
+            "num_filters1": 12,
+            "num_filters2": 24,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.52,
+          "test_loss": 0.85827724609375,
+          "train_time": 3.111271858215332,
+          "total_params": 39408,
+          "label": "(16,32)",
+          "value": 16,
+          "config": {
+            "num_filters1": 16,
+            "num_filters2": 32,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.74,
+          "test_loss": 0.8475027282714844,
+          "train_time": 3.030345916748047,
+          "total_params": 53120,
+          "label": "(20,40)",
+          "value": 20,
+          "config": {
+            "num_filters1": 20,
+            "num_filters2": 40,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.72,
+          "test_loss": 0.8550285339355469,
+          "train_time": 3.307098150253296,
+          "total_params": 68432,
+          "label": "(24,48)",
+          "value": 24,
+          "config": {
+            "num_filters1": 24,
+            "num_filters2": 48,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.22,
+          "test_loss": 0.8173314270019532,
+          "train_time": 3.5436909198760986,
+          "total_params": 103856,
+          "label": "(32,64)",
+          "value": 32,
+          "config": {
+            "num_filters1": 32,
+            "num_filters2": 64,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        }
+      ],
+      "refine": [
+        {
+          "test_accuracy": 70.79,
+          "test_loss": 0.8207997314453125,
+          "train_time": 4.23309588432312,
+          "total_params": 68432,
+          "label": "(24,48)",
+          "value": 24,
+          "config": {
+            "num_filters1": 24,
+            "num_filters2": 48,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 66.88,
+          "test_loss": 0.8963082214355469,
+          "train_time": 4.090594053268433,
+          "total_params": 76688,
+          "label": "(26,52)",
+          "value": 26,
+          "config": {
+            "num_filters1": 26,
+            "num_filters2": 52,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.66,
+          "test_loss": 0.8180012573242188,
+          "train_time": 4.099704027175903,
+          "total_params": 85344,
+          "label": "(28,56)",
+          "value": 28,
+          "config": {
+            "num_filters1": 28,
+            "num_filters2": 56,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.53,
+          "test_loss": 0.8476236389160157,
+          "train_time": 4.214173078536987,
+          "total_params": 94400,
+          "label": "(30,60)",
+          "value": 30,
+          "config": {
+            "num_filters1": 30,
+            "num_filters2": 60,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.12,
+          "test_loss": 0.8466542907714844,
+          "train_time": 4.274747133255005,
+          "total_params": 103856,
+          "label": "(32,64)",
+          "value": 32,
+          "config": {
+            "num_filters1": 32,
+            "num_filters2": 64,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.25,
+          "test_loss": 0.8436720886230469,
+          "train_time": 4.77665114402771,
+          "total_params": 113712,
+          "label": "(34,68)",
+          "value": 34,
+          "config": {
+            "num_filters1": 34,
+            "num_filters2": 68,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.35,
+          "test_loss": 0.7951478454589844,
+          "train_time": 4.775383949279785,
+          "total_params": 123968,
+          "label": "(36,72)",
+          "value": 36,
+          "config": {
+            "num_filters1": 36,
+            "num_filters2": 72,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.49,
+          "test_loss": 0.805773388671875,
+          "train_time": 6.428324222564697,
+          "total_params": 134624,
+          "label": "(38,76)",
+          "value": 38,
+          "config": {
+            "num_filters1": 38,
+            "num_filters2": 76,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.96,
+          "test_loss": 0.792260205078125,
+          "train_time": 6.034348249435425,
+          "total_params": 145680,
+          "label": "(40,80)",
+          "value": 40,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        }
+      ],
+      "best": {
+        "test_accuracy": 71.96,
+        "test_loss": 0.792260205078125,
+        "train_time": 6.034348249435425,
+        "total_params": 145680,
+        "label": "(40,80)",
+        "value": 40,
+        "config": {
+          "num_filters1": 40,
+          "num_filters2": 80,
+          "filter_size": 5,
+          "fc_hidden": 50,
+          "dropout_rate": 0.5,
+          "pool_size": 2
+        }
+      }
+    },
+    "dropout_rates": {
+      "coarse": [
+        {
+          "test_accuracy": 70.62,
+          "test_loss": 0.81119599609375,
+          "train_time": 5.3230907917022705,
+          "total_params": 145680,
+          "label": "0.00",
+          "value": 0.0,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.0,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.37,
+          "test_loss": 0.7933111877441407,
+          "train_time": 4.955357313156128,
+          "total_params": 145680,
+          "label": "0.10",
+          "value": 0.1,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.07,
+          "test_loss": 0.7920063049316406,
+          "train_time": 4.623461961746216,
+          "total_params": 145680,
+          "label": "0.20",
+          "value": 0.2,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.2,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.19,
+          "test_loss": 0.8343568542480468,
+          "train_time": 4.3108861446380615,
+          "total_params": 145680,
+          "label": "0.30",
+          "value": 0.3,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.3,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.5,
+          "test_loss": 0.8008184387207031,
+          "train_time": 4.305567026138306,
+          "total_params": 145680,
+          "label": "0.40",
+          "value": 0.4,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.4,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.28,
+          "test_loss": 0.7906540588378906,
+          "train_time": 4.270697832107544,
+          "total_params": 145680,
+          "label": "0.50",
+          "value": 0.5,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.5,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.68,
+          "test_loss": 0.8097182861328125,
+          "train_time": 4.302283048629761,
+          "total_params": 145680,
+          "label": "0.60",
+          "value": 0.6,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.6,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.0,
+          "test_loss": 0.7720564819335938,
+          "train_time": 4.226152181625366,
+          "total_params": 145680,
+          "label": "0.70",
+          "value": 0.7,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.7,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.12,
+          "test_loss": 0.8054205078125,
+          "train_time": 4.159321069717407,
+          "total_params": 145680,
+          "label": "0.80",
+          "value": 0.8,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.8,
+            "pool_size": 2
+          }
+        }
+      ],
+      "refine": [
+        {
+          "test_accuracy": 68.24,
+          "test_loss": 0.849785693359375,
+          "train_time": 4.106234073638916,
+          "total_params": 145680,
+          "label": "0.00",
+          "value": 0.0,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.0,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.92,
+          "test_loss": 0.7847663330078125,
+          "train_time": 4.284703969955444,
+          "total_params": 145680,
+          "label": "0.05",
+          "value": 0.05,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.05,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 72.43,
+          "test_loss": 0.7656193725585938,
+          "train_time": 4.4512999057769775,
+          "total_params": 145680,
+          "label": "0.10",
+          "value": 0.1,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.45,
+          "test_loss": 0.7670210754394531,
+          "train_time": 4.459152936935425,
+          "total_params": 145680,
+          "label": "0.15",
+          "value": 0.15,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.15,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.57,
+          "test_loss": 0.8117281066894532,
+          "train_time": 4.444149971008301,
+          "total_params": 145680,
+          "label": "0.20",
+          "value": 0.2,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.2,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.15,
+          "test_loss": 0.8120858032226562,
+          "train_time": 4.544265031814575,
+          "total_params": 145680,
+          "label": "0.25",
+          "value": 0.25,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.25,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.51,
+          "test_loss": 0.7920927917480469,
+          "train_time": 4.459260940551758,
+          "total_params": 145680,
+          "label": "0.30",
+          "value": 0.3,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 50,
+            "dropout_rate": 0.3,
+            "pool_size": 2
+          }
+        }
+      ],
+      "best": {
+        "test_accuracy": 72.43,
+        "test_loss": 0.7656193725585938,
+        "train_time": 4.4512999057769775,
+        "total_params": 145680,
+        "label": "0.10",
+        "value": 0.1,
+        "config": {
+          "num_filters1": 40,
+          "num_filters2": 80,
+          "filter_size": 5,
+          "fc_hidden": 50,
+          "dropout_rate": 0.1,
+          "pool_size": 2
+        }
+      }
+    },
+    "hidden_sizes": {
+      "coarse": [
+        {
+          "test_accuracy": 67.18,
+          "test_loss": 0.8693570678710938,
+          "train_time": 4.544899225234985,
+          "total_params": 101786,
+          "label": "16",
+          "value": 16,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 16,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 67.26,
+          "test_loss": 0.85327958984375,
+          "train_time": 4.43806004524231,
+          "total_params": 112114,
+          "label": "24",
+          "value": 24,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 24,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.54,
+          "test_loss": 0.8173624206542969,
+          "train_time": 4.450986862182617,
+          "total_params": 122442,
+          "label": "32",
+          "value": 32,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 32,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 72.46,
+          "test_loss": 0.7623414123535156,
+          "train_time": 4.504867076873779,
+          "total_params": 143098,
+          "label": "48",
+          "value": 48,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 48,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.0,
+          "test_loss": 0.7796486022949218,
+          "train_time": 4.53022575378418,
+          "total_params": 163754,
+          "label": "64",
+          "value": 64,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 64,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 67.02,
+          "test_loss": 0.8670608154296875,
+          "train_time": 4.482980012893677,
+          "total_params": 205066,
+          "label": "96",
+          "value": 96,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 96,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.59,
+          "test_loss": 0.7997001525878906,
+          "train_time": 4.496858835220337,
+          "total_params": 246378,
+          "label": "128",
+          "value": 128,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 128,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.37,
+          "test_loss": 0.8060976867675781,
+          "train_time": 4.4971771240234375,
+          "total_params": 329002,
+          "label": "192",
+          "value": 192,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 192,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 63.38,
+          "test_loss": 0.8774951171875,
+          "train_time": 4.53404688835144,
+          "total_params": 411626,
+          "label": "256",
+          "value": 256,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 256,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        }
+      ],
+      "refine": [
+        {
+          "test_accuracy": 70.71,
+          "test_loss": 0.8242669738769531,
+          "train_time": 4.395854711532593,
+          "total_params": 112114,
+          "label": "24",
+          "value": 24,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 24,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 71.28,
+          "test_loss": 0.7859906799316406,
+          "train_time": 4.395665168762207,
+          "total_params": 122442,
+          "label": "32",
+          "value": 32,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 32,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 66.33,
+          "test_loss": 0.8766386779785156,
+          "train_time": 4.765772104263306,
+          "total_params": 127606,
+          "label": "36",
+          "value": 36,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 36,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.35,
+          "test_loss": 0.7870982849121094,
+          "train_time": 4.2541282176971436,
+          "total_params": 132770,
+          "label": "40",
+          "value": 40,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 40,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 67.95,
+          "test_loss": 0.8542102783203125,
+          "train_time": 4.161473989486694,
+          "total_params": 143098,
+          "label": "48",
+          "value": 48,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 48,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 70.61,
+          "test_loss": 0.7976559814453125,
+          "train_time": 4.289615869522095,
+          "total_params": 153426,
+          "label": "56",
+          "value": 56,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 56,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 68.94,
+          "test_loss": 0.8367167846679687,
+          "train_time": 4.280422925949097,
+          "total_params": 158590,
+          "label": "60",
+          "value": 60,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 60,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 69.01,
+          "test_loss": 0.7971971130371094,
+          "train_time": 4.120986700057983,
+          "total_params": 163754,
+          "label": "64",
+          "value": 64,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 64,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        },
+        {
+          "test_accuracy": 66.59,
+          "test_loss": 0.9481952880859374,
+          "train_time": 4.181239128112793,
+          "total_params": 174082,
+          "label": "72",
+          "value": 72,
+          "config": {
+            "num_filters1": 40,
+            "num_filters2": 80,
+            "filter_size": 5,
+            "fc_hidden": 72,
+            "dropout_rate": 0.1,
+            "pool_size": 2
+          }
+        }
+      ],
+      "best": {
+        "test_accuracy": 72.46,
+        "test_loss": 0.7623414123535156,
+        "train_time": 4.504867076873779,
+        "total_params": 143098,
+        "label": "48",
+        "value": 48,
+        "config": {
+          "num_filters1": 40,
+          "num_filters2": 80,
+          "filter_size": 5,
+          "fc_hidden": 48,
+          "dropout_rate": 0.1,
+          "pool_size": 2
+        }
+      }
+    }
+  },
+  "final_best_config": {
+    "num_filters1": 40,
+    "num_filters2": 80,
+    "filter_size": 5,
+    "fc_hidden": 48,
+    "dropout_rate": 0.1,
+    "pool_size": 2
+  },
+  "final_best_config_label": "filters=(40,80), dropout=0.10, hidden=48",
+  "full_data_confirmation": {
+    "baseline": {
+      "test_accuracy": 82.88,
+      "test_loss": 0.4811541717529297,
+      "train_time": 40.58277606964111,
       "total_params": 21840,
-      "label": "(10,20)"
+      "label": "filters=(10,20), dropout=0.50, hidden=50"
     },
-    {
-      "test_accuracy": 86.4,
-      "test_loss": 0.3760892120361328,
-      "train_time": 94.0286967754364,
-      "total_params": 36230,
-      "label": "(15,30)"
-    },
-    {
-      "test_accuracy": 86.05,
-      "test_loss": 0.38144446411132815,
-      "train_time": 80.26416015625,
-      "total_params": 53120,
-      "label": "(20,40)"
-    },
-    {
-      "test_accuracy": 86.46,
-      "test_loss": 0.3722240112304688,
-      "train_time": 99.16902995109558,
-      "total_params": 94400,
-      "label": "(30,60)"
-    },
-    {
-      "test_accuracy": 87.94,
-      "test_loss": 0.33911812438964845,
-      "train_time": 120.68088912963867,
-      "total_params": 145680,
-      "label": "(40,80)"
+    "best_config": {
+      "test_accuracy": 85.15,
+      "test_loss": 0.40843372497558594,
+      "train_time": 56.30396389961243,
+      "total_params": 143098,
+      "label": "filters=(40,80), dropout=0.10, hidden=48"
     }
-  ],
-  "dropout_rates": [
-    {
-      "test_accuracy": 88.4,
-      "test_loss": 0.3223588073730469,
-      "train_time": 150.60306191444397,
-      "total_params": 145680,
-      "label": "0.0"
-    },
-    {
-      "test_accuracy": 87.67,
-      "test_loss": 0.34247604370117185,
-      "train_time": 191.53676891326904,
-      "total_params": 145680,
-      "label": "0.1"
-    },
-    {
-      "test_accuracy": 87.51,
-      "test_loss": 0.3370346923828125,
-      "train_time": 125.62984609603882,
-      "total_params": 145680,
-      "label": "0.2"
-    },
-    {
-      "test_accuracy": 88.69,
-      "test_loss": 0.3260304412841797,
-      "train_time": 158.2132806777954,
-      "total_params": 145680,
-      "label": "0.3"
-    },
-    {
-      "test_accuracy": 88.04,
-      "test_loss": 0.3348526092529297,
-      "train_time": 120.50262570381165,
-      "total_params": 145680,
-      "label": "0.4"
-    },
-    {
-      "test_accuracy": 88.42,
-      "test_loss": 0.3255071075439453,
-      "train_time": 115.65101385116577,
-      "total_params": 145680,
-      "label": "0.5"
-    },
-    {
-      "test_accuracy": 87.35,
-      "test_loss": 0.35127071838378904,
-      "train_time": 152.6644868850708,
-      "total_params": 145680,
-      "label": "0.6"
-    },
-    {
-      "test_accuracy": 87.2,
-      "test_loss": 0.3524407775878906,
-      "train_time": 129.9265329837799,
-      "total_params": 145680,
-      "label": "0.7"
-    }
-  ],
-  "hidden_sizes": [
-    {
-      "test_accuracy": 88.13,
-      "test_loss": 0.33617848815917967,
-      "train_time": 110.50926208496094,
-      "total_params": 113405,
-      "label": "25"
-    },
-    {
-      "test_accuracy": 88.46,
-      "test_loss": 0.32597850341796875,
-      "train_time": 110.21732211112976,
-      "total_params": 145680,
-      "label": "50"
-    },
-    {
-      "test_accuracy": 87.52,
-      "test_loss": 0.3531848571777344,
-      "train_time": 140.43513298034668,
-      "total_params": 177955,
-      "label": "75"
-    },
-    {
-      "test_accuracy": 86.35,
-      "test_loss": 0.36632899780273437,
-      "train_time": 110.06933116912842,
-      "total_params": 210230,
-      "label": "100"
-    },
-    {
-      "test_accuracy": 87.99,
-      "test_loss": 0.33563673706054686,
-      "train_time": 108.9647479057312,
-      "total_params": 274780,
-      "label": "150"
-    },
-    {
-      "test_accuracy": 88.34,
-      "test_loss": 0.32595704650878904,
-      "train_time": 117.69544196128845,
-      "total_params": 339330,
-      "label": "200"
-    },
-    {
-      "test_accuracy": 87.68,
-      "test_loss": 0.3345153228759766,
-      "train_time": 129.71401524543762,
-      "total_params": 468430,
-      "label": "300"
-    }
-  ]
+  },
+  "total_evaluations": 54,
+  "dataset": {
+    "name": "FashionMNIST",
+    "train_subset_size": 12000,
+    "full_train_size": 60000,
+    "test_size": 10000
+  },
+  "device": "mps",
+  "seed": 42
 }

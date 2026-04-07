@@ -1,25 +1,39 @@
-# Joseph Defendre, Sourav Das
-# CS 5330 - Project 5: Recognition using Deep Networks
-# Task 1: Build and train a network to recognize MNIST digits
+"""
+ * Project 5: Recognition using Deep Networks
+ * Course: CS 5330 - Pattern Recognition and Computer Vision
+ *
+ * <p>Implements the core MNIST convolutional neural network, dataset loading,
+ * training loop, evaluation loop, and training artifact generation used by
+ * Task 1 of the project.</p>
+ *
+ * <p>Authors: Joseph Defendre, Sourav Das</p>
+ """
 
 # import statements
 import sys
+import os
+import json
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 import torchvision.transforms as transforms
+os.environ.setdefault('MPLCONFIGDIR', os.path.join(os.getcwd(), '.matplotlib'))
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+MNIST_MEAN = 0.1307
+MNIST_STD = 0.3081
+
 
 # CNN network model for MNIST digit recognition
 class MyNetwork(nn.Module):
-    """CNN with two conv layers, dropout, and two fully connected layers."""
+    """MNIST convolutional classifier with two conv blocks and two dense layers."""
 
     def __init__(self):
+        """Initialize the convolutional, dropout, and linear layers."""
         super(MyNetwork, self).__init__()
         # A convolution layer with 10 5x5 filters
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
@@ -34,6 +48,14 @@ class MyNetwork(nn.Module):
 
     # computes a forward pass for the network
     def forward(self, x):
+        """Run a forward pass through the CNN.
+
+        Args:
+            x: Input tensor of shape ``[batch_size, 1, 28, 28]``.
+
+        Returns:
+            A tensor of log-probabilities with shape ``[batch_size, 10]``.
+        """
         # Conv1 -> max pool 2x2 -> ReLU
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
         # Conv2 -> dropout -> max pool 2x2 -> ReLU
@@ -49,10 +71,18 @@ class MyNetwork(nn.Module):
 
 # loads the MNIST training and test datasets
 def load_data(batch_size_train=64, batch_size_test=1000):
-    """Load MNIST train and test datasets with normalization."""
+    """Load the MNIST train and test data loaders.
+
+    Args:
+        batch_size_train: Batch size used for the shuffled training loader.
+        batch_size_test: Batch size used for the fixed-order test loader.
+
+    Returns:
+        A tuple ``(train_loader, test_loader)`` of PyTorch data loaders.
+    """
     transform = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
+        transforms.Normalize((MNIST_MEAN,), (MNIST_STD,))
     ])
 
     train_loader = torch.utils.data.DataLoader(
@@ -70,14 +100,24 @@ def load_data(batch_size_train=64, batch_size_test=1000):
 
 # plots the first six examples from the test set
 def plot_first_six(test_loader, save_path='results/first_six_digits.png'):
-    """Plot the first six example digits from the test set."""
+    """Save a 2x3 plot of the first six MNIST test digits.
+
+    Args:
+        test_loader: Data loader for the MNIST test split in fixed order.
+        save_path: Output path for the saved figure.
+
+    Returns:
+        None.
+    """
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
     examples = enumerate(test_loader)
     batch_idx, (example_data, example_targets) = next(examples)
 
     fig, axes = plt.subplots(2, 3, figsize=(8, 5))
     for i in range(6):
         row, col = i // 3, i % 3
-        axes[row][col].imshow(example_data[i][0], cmap='gray')
+        display_image = example_data[i][0] * MNIST_STD + MNIST_MEAN
+        axes[row][col].imshow(display_image, cmap='gray', vmin=0.0, vmax=1.0)
         axes[row][col].set_title(f'Label: {example_targets[i].item()}')
         axes[row][col].set_xticks([])
         axes[row][col].set_yticks([])
@@ -90,7 +130,19 @@ def plot_first_six(test_loader, save_path='results/first_six_digits.png'):
 
 # trains the network for one epoch
 def train_epoch(model, device, train_loader, optimizer, epoch, train_losses):
-    """Train for one epoch and record losses."""
+    """Train the network for one epoch and record aggregate metrics.
+
+    Args:
+        model: The CNN model being trained.
+        device: The torch device on which training is performed.
+        train_loader: Training data loader.
+        optimizer: Optimizer used to update model parameters.
+        epoch: One-based epoch index used for logging.
+        train_losses: List that is updated in place with the average epoch loss.
+
+    Returns:
+        A tuple ``(avg_loss, accuracy)`` for the completed epoch.
+    """
     model.train()
     correct = 0
     total = 0
@@ -116,7 +168,17 @@ def train_epoch(model, device, train_loader, optimizer, epoch, train_losses):
 
 # evaluates the network on the test set
 def test_epoch(model, device, test_loader, test_losses):
-    """Evaluate model on test set and record losses."""
+    """Evaluate the network on the MNIST test set.
+
+    Args:
+        model: The CNN model being evaluated.
+        device: The torch device on which evaluation is performed.
+        test_loader: Test data loader.
+        test_losses: List that is updated in place with the average test loss.
+
+    Returns:
+        A tuple ``(avg_loss, accuracy)`` for the evaluation pass.
+    """
     model.eval()
     test_loss = 0
     correct = 0
@@ -141,7 +203,22 @@ def test_epoch(model, device, test_loader, test_losses):
 def train_network(model, device, train_loader, test_loader, epochs=5,
                   learning_rate=0.01, momentum=0.5,
                   save_path='results/mnist_model.pth'):
-    """Train network, plot loss curves, and save model."""
+    """Train the CNN, save plots and metrics, and persist the model weights.
+
+    Args:
+        model: The CNN model to train.
+        device: The torch device on which training is performed.
+        train_loader: Training data loader.
+        test_loader: Test data loader.
+        epochs: Number of training epochs to run.
+        learning_rate: SGD learning rate.
+        momentum: SGD momentum factor.
+        save_path: Output path for the saved model state dictionary.
+
+    Returns:
+        A dictionary containing the saved training and evaluation metrics.
+    """
+    os.makedirs('results', exist_ok=True)
     optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
 
     train_losses = []
@@ -180,16 +257,36 @@ def train_network(model, device, train_loader, test_loader, epochs=5,
     plt.close()
     print('Saved training plot to results/training_plot.png')
 
+    training_history = {
+        'epochs': epochs,
+        'learning_rate': learning_rate,
+        'momentum': momentum,
+        'train_losses': train_losses,
+        'test_losses': test_losses,
+        'train_accuracies': train_accuracies,
+        'test_accuracies': test_accuracies
+    }
+    with open('results/training_history.json', 'w', encoding='utf-8') as output_file:
+        json.dump(training_history, output_file, indent=2)
+    print('Saved training history to results/training_history.json')
+
     # Save model
     torch.save(model.state_dict(), save_path)
     print(f'Saved model to {save_path}')
 
-    return train_losses, test_losses
+    return training_history
 
 
 # main function
 def main(argv):
-    """Main entry point: load data, train model, plot results."""
+    """Run the full Task 1 MNIST training pipeline.
+
+    Args:
+        argv: Command-line arguments passed to the script.
+
+    Returns:
+        None.
+    """
     # Set device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f'Using device: {device}')

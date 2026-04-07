@@ -1,0 +1,12 @@
+Digit 0: Predicted 9 WRONG
+Digit 1: Predicted 1 CORRECT
+Digit 2: Predicted 2 CORRECT
+Digit 3: Predicted 3 CORRECT
+Digit 4: Predicted 4 CORRECT
+Digit 5: Predicted 9 WRONG
+Digit 6: Predicted 6 CORRECT
+Digit 7: Predicted 7 CORRECT
+Digit 8: Predicted 9 WRONG
+Digit 9: Predicted 9 CORRECT
+
+Accuracy: 7/10 (70.0%)

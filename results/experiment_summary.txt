@@ -1,0 +1,12 @@
+Task 5 Experiment Summary
+Search evaluations: 52
+Total evaluations: 54
+Final best config: filters=(40,80), dropout=0.10, hidden=48
+Baseline full-data accuracy: 82.88%
+Best full-data accuracy: 85.15%
+Full-data accuracy gain over baseline: 2.27 points
+
+Best architecture values:
+  Filters: (40, 80)
+  Dropout: 0.10
+  Hidden size: 48
