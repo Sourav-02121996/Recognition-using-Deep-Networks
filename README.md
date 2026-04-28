@@ -67,12 +67,15 @@ This repository presents a deep-learning pipeline for image recognition across f
 ### Transformer and Architecture Search Results
 
 <p align="center">
-  <img src="results/transformer_training.png" width="32%" alt="Vision Transformer training curve" />
-  <img src="results/transformer_extension_training.png" width="32%" alt="Enhanced Vision Transformer training curve" />
-  <img src="results/experiment_results.png" width="32%" alt="Architecture search experiment results" />
+  <img src="results/transformer_training.png" width="48%" alt="Vision Transformer training curve" />
+  <img src="results/transformer_extension_training.png" width="48%" alt="Enhanced Vision Transformer training curve" />
 </p>
 
-*These results compare the baseline transformer, the enhanced transformer extension, and the final Fashion-MNIST architecture sweep.*
+<p align="center">
+  <img src="results/experiment_results.png" width="72%" alt="Architecture search experiment results" />
+</p>
+
+*Top: side-by-side comparison of the baseline and enhanced transformer training curves. Bottom: the final Fashion-MNIST architecture search results shown at a larger size for readability.*
 
 ## Links/URLs
 - No videos submitted for this project.
