@@ -4,6 +4,76 @@
 **Course:** CS 5330 - Pattern Recognition and Computer Vision
 **Date:** March 2026
 
+## Project Overview
+
+This repository presents a deep-learning pipeline for image recognition across four related tasks: a CNN for MNIST digit classification, filter-level network inspection, transfer learning for Greek letters, and Vision Transformer experiments. The project closes with an architecture search study on Fashion-MNIST to compare design tradeoffs and model performance.
+
+## Portfolio Highlights
+
+- The MNIST CNN reached **98.05% test accuracy** after 5 epochs.
+- The CNN correctly classified the first **10/10** held-out MNIST examples visualized in the report outputs.
+- On handwritten custom digits, the model achieved **70.0% accuracy (7/10)**.
+- The transfer-learning model for Greek letters reached its first **perfect training epoch at epoch 14** and scored **83.3% (5/6)** on custom Greek inputs.
+- The baseline Vision Transformer reached **98.93% test accuracy**.
+- The enhanced transformer extension peaked at **99.0% test accuracy**.
+- The Fashion-MNIST architecture search improved accuracy from **82.88%** to **85.15%**.
+
+## Visual Showcase
+
+### Model Architecture
+
+<p align="center">
+  <img src="results/network_diagram.svg" width="760" alt="Neural network architecture diagram" />
+</p>
+
+*High-level architecture view used to document the CNN pipeline and model flow.*
+
+### MNIST CNN Training and Predictions
+
+<p align="center">
+  <img src="results/training_plot.png" width="48%" alt="MNIST CNN training curve" />
+  <img src="results/first_nine_predictions.png" width="48%" alt="MNIST CNN predictions on test digits" />
+</p>
+
+*Left: training and test accuracy/loss across epochs. Right: sample MNIST predictions from the trained CNN.*
+
+### Custom Digit Inference
+
+<p align="center">
+  <img src="results/custom_digits_results.png" width="48%" alt="Predictions on custom handwritten digits" />
+  <img src="results/custom_digits_inputs.png" width="48%" alt="Custom handwritten digit inputs" />
+</p>
+
+*The trained MNIST model was evaluated on hand-drawn digit samples to test robustness outside the standard benchmark.*
+
+### First-Layer Filter Analysis
+
+<p align="center">
+  <img src="results/conv1_filters.png" width="48%" alt="Visualization of first convolutional layer filters" />
+  <img src="results/filter_effects.png" width="48%" alt="Effects of first-layer filters on a sample digit" />
+</p>
+
+*These visualizations expose what the first convolutional layer learns and how each filter responds to an input digit.*
+
+### Transfer Learning on Greek Letters
+
+<p align="center">
+  <img src="results/greek_training_loss.png" width="48%" alt="Greek letter transfer learning training curve" />
+  <img src="results/custom_greek_results.png" width="48%" alt="Predictions on custom Greek letters" />
+</p>
+
+*A pretrained digit recognizer was adapted to classify alpha, beta, and gamma using a small Greek-letter dataset.*
+
+### Transformer and Architecture Search Results
+
+<p align="center">
+  <img src="results/transformer_training.png" width="32%" alt="Vision Transformer training curve" />
+  <img src="results/transformer_extension_training.png" width="32%" alt="Enhanced Vision Transformer training curve" />
+  <img src="results/experiment_results.png" width="32%" alt="Architecture search experiment results" />
+</p>
+
+*These results compare the baseline transformer, the enhanced transformer extension, and the final Fashion-MNIST architecture sweep.*
+
 ## Links/URLs
 - No videos submitted for this project.
 - Custom Greek examples link: https://drive.google.com/drive/folders/1qOwOHZjCKCoBXG1X0rVXl0GSploeAE9X?usp=sharing
